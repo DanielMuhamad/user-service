@@ -3,3 +3,4 @@ flask-restplus
 flask-sqlalchemy
 flask-marshmallow
 flask-migrate
+marshmallow-sqlalchemy
