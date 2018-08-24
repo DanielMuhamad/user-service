@@ -15,13 +15,27 @@ user_schema = UserSchema(many=True)
 @ns.route('/user')
 class UserListAPI(Resource):
     def get(self):
+        page_param = request.args.get('page')
+        if not page_param:
+            page_param = 1
+
+        paginate = User.query.paginate(page=int(page_param), per_page=2)
         queryset = User.query.all()
-        queryset = user_schema.dump(queryset).data
+        queryset = user_schema.dump(paginate.items).data
+        endpoint = request.url_rule
 
         return jsonify({
             'data': queryset,
             'message': 'data have been successfully fetched',
-            'error': False
+            'error': False,
+            'meta': {
+                'count': paginate.total,
+                'page_count': paginate.pages,
+                'current_page': paginate.page,
+                'next': '{}?page={}'.format(endpoint, paginate.next_num) if paginate.has_next else '',
+                'prev': '{}?page={}'.format(endpoint, paginate.prev_num) if paginate.has_prev else '',
+                
+            }
         })
 
     @api.doc(body=user_fields)
@@ -39,7 +53,10 @@ class UserListAPI(Resource):
                 user.__serialize__()
             ],
             'message': 'data have been successfully saved',
-            'error': False 
+            'error': False,
+            'meta': {
+
+            }
         })
 
 
