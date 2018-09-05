@@ -7,4 +7,5 @@ from app import app
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+
 Migrate(app, db)

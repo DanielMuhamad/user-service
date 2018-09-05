@@ -2,14 +2,14 @@
 
 # Activate the virtual environment
 #cd $(pwd)
-DIR=/home/ubuntu/core/user_service/user
+DIR=/home/hamdanilm96_gmail_com/core-api/user_service/user
 cd ${DIR}
 source ../env/bin/activate
 pip install -r requirements.txt
 
 export FLASK_ENV=development
 
-exec ../env/bin/gunicorn run:app -b 0.0.0.0:8088 \
+exec ../env/bin/gunicorn run:app -b 0.0.0.0:5001 \
   --reload \
   --workers 2 \
   --log-level=debug \
